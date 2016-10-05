@@ -32,3 +32,13 @@ The flat markup is calculated first and then all other markups are calculated on
 
     Input:  $12,456.95, 4 people, books
     Output: $13,707.63
+
+## Hit the ground running
+
+* Runtime version: [Ruby 2.3.1](https://github.com/mariusbutuc/nu-markup-calculator/blob/master/.ruby-version)
+
+* Installing dependencies:
+
+  ```
+  bundle install
+  ```
