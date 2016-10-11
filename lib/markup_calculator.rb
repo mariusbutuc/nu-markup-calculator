@@ -6,6 +6,9 @@ class MarkupCalculator
     electronics:    0.02,
   }
   PER_PERSON_MARKUP = 0.012
+  SYNONYMS = [
+    %i(pharmaceutical drugs),
+  ].freeze.map(&:freeze)
 
   attr_reader :base_price, :people, :material
 
@@ -35,8 +38,24 @@ class MarkupCalculator
   end
 
   def material_markup(material)
-    return 0 unless MATERIAL_MARKUP.keys.include?(material)
+    if any_markup_for?(material)
+      MATERIAL_MARKUP[material]
+    elsif material_synonym = synonym_for(material)
+      MATERIAL_MARKUP[material_synonym]
+    else
+      0
+    end
+  end
 
-    MATERIAL_MARKUP[material]
+  def any_markup_for?(material)
+    MATERIAL_MARKUP.keys.include?(material)
+  end
+
+  def synonym_for(material)
+    synonyms_pair = SYNONYMS.detect { |pair| pair.include?(material) }
+
+    return if synonyms_pair.nil?
+
+    (synonyms_pair - Array(material)).first
   end
 end
