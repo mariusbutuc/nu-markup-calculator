@@ -9,12 +9,34 @@ class MarkupCalculator
   }
   PER_PERSON_MARKUP = 0.012
 
-  attr_reader :base_price, :people, :material
+  attr_reader :material
 
   def initialize(base_price:, people:, material:)
     @base_price = base_price
     @people = people
     @material = material.to_sym
+  end
+
+  def base_price
+    raise ArgumentError, 'must be positive: base_price' unless @base_price.positive?
+    @base_price
+  rescue NoMethodError => e
+    if e.message.match(/positive\?/)
+      raise ArgumentError, 'must be numeric: base_price'
+    else
+      raise
+    end
+  end
+
+  def people
+    raise ArgumentError, 'must be positive: people' unless @people.positive?
+    @people
+  rescue NoMethodError => e
+    if e.message.match(/positive\?/)
+      raise ArgumentError, 'must be numeric: people'
+    else
+      raise
+    end
   end
 
   def calculate
