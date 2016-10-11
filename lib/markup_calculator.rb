@@ -1,3 +1,5 @@
+require_relative 'thesaurus'
+
 class MarkupCalculator
   FLAT_MARKUP       = 0.05
   MATERIAL_MARKUP   = {
@@ -6,9 +8,6 @@ class MarkupCalculator
     electronics:    0.02,
   }
   PER_PERSON_MARKUP = 0.012
-  SYNONYMS = [
-    %i(pharmaceutical drugs),
-  ].freeze.map(&:freeze)
 
   attr_reader :base_price, :people, :material
 
@@ -40,7 +39,7 @@ class MarkupCalculator
   def material_markup(material)
     if any_markup_for?(material)
       MATERIAL_MARKUP[material]
-    elsif material_synonym = synonym_for(material)
+    elsif material_synonym = Thesaurus.new(material).synonym
       MATERIAL_MARKUP[material_synonym]
     else
       0
@@ -49,13 +48,5 @@ class MarkupCalculator
 
   def any_markup_for?(material)
     MATERIAL_MARKUP.keys.include?(material)
-  end
-
-  def synonym_for(material)
-    synonyms_pair = SYNONYMS.detect { |pair| pair.include?(material) }
-
-    return if synonyms_pair.nil?
-
-    (synonyms_pair - Array(material)).first
   end
 end

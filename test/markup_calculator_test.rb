@@ -1,4 +1,5 @@
 require_relative 'test_helper'
+require_relative '../lib/markup_calculator'
 
 class MarkupCalculatorTest < Minitest::Test
   def test_calculate_returns_expected_price_for_food_and_three_people
