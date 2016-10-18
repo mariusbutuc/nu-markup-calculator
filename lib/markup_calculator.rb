@@ -12,8 +12,6 @@ class MarkupCalculator
   }
   PER_PERSON_MARKUP = 0.012
 
-  attr_reader :base_price, :people, :material
-
   def initialize(base_price:, people:, material:)
     @base_price = base_price
     @people = people
@@ -28,6 +26,8 @@ class MarkupCalculator
   end
 
   private
+
+  attr_reader :base_price, :people, :material
 
   def apply_flat_markup(price:)
     price * (1 + FLAT_MARKUP)
