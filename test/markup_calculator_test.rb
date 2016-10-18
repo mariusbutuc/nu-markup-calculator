@@ -69,7 +69,18 @@ class MarkupCalculatorTest < Minitest::Test
     assert_match 'must be positive: people', error.message
   end
 
-  def test_calculate_returns_expected_price_for_food_and_three_people
+  def test_calculator_applies_electronics_category_markup
+    calculator = MarkupCalculator.new(
+      base_price: 5_432.99,
+      people:     2,
+      material:   'electronics'
+    )
+    expected_output = 5_955.64
+
+    assert_equal expected_output, calculator.calculate
+  end
+
+  def test_calculator_applies_food_category_markup
     calculator = MarkupCalculator.new(
       base_price: 1_299.99,
       people:     3,
@@ -80,7 +91,18 @@ class MarkupCalculatorTest < Minitest::Test
     assert_equal expected_output, calculator.calculate
   end
 
-  def test_calculate_returns_expected_price_for_drugs_and_one_person
+  def test_calculator_applies_pharmaceutical_category_markup
+    calculator = MarkupCalculator.new(
+      base_price: 5_432.00,
+      people:     1,
+      material:   'pharmaceutical'
+    )
+    expected_output = 6_199.81
+
+    assert_equal expected_output, calculator.calculate
+  end
+
+  def test_calculator_applies_pharmaceutical_category_markup_for_drugs_synonym
     calculator = MarkupCalculator.new(
       base_price: 5_432.00,
       people:     1,
@@ -91,7 +113,7 @@ class MarkupCalculatorTest < Minitest::Test
     assert_equal expected_output, calculator.calculate
   end
 
-  def test_calculate_returns_expected_price_for_books_and_four_people
+  def test_calculator_applies_no_extra_markup_for_unhandled_markup_categories
     calculator = MarkupCalculator.new(
       base_price: 12_456.95,
       people:     4,

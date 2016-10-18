@@ -3,9 +3,9 @@ require_relative 'thesaurus'
 class MarkupCalculator
   FLAT_MARKUP       = 0.05
   MATERIAL_MARKUP   = {
-    pharmaceutical: 0.075,
-    food:           0.13,
     electronics:    0.02,
+    food:           0.13,
+    pharmaceutical: 0.075,
   }
   PER_PERSON_MARKUP = 0.012
 
