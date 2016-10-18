@@ -11,6 +11,7 @@ class MarkupCalculator
     pharmaceutical: 0.075,
   }
   PER_PERSON_MARKUP = 0.012
+  PRICE_PRECISION = 2
 
   def initialize(base_price:, people:, material:)
     @base_price = base_price
@@ -22,7 +23,9 @@ class MarkupCalculator
   end
 
   def calculate
-    apply_other_markups(price: apply_flat_markup(price: base_price), people: people, material: material)
+    full_price = apply_other_markups(price: apply_flat_markup(price: base_price), people: people, material: material)
+
+    printable(full_price)
   end
 
   private
@@ -34,8 +37,7 @@ class MarkupCalculator
   end
 
   def apply_other_markups(price:, people:, material:)
-    exact_price = price * (1 + people_markup(people) + material_markup(material))
-    exact_price.round(2)
+    price * (1 + people_markup(people) + material_markup(material))
   end
 
   def people_markup(people)
@@ -54,6 +56,10 @@ class MarkupCalculator
 
   def any_markup_for?(material)
     MATERIAL_MARKUP.keys.include?(material)
+  end
+
+  def printable(price)
+    price.round(PRICE_PRECISION)
   end
 
   def validate_base_price
