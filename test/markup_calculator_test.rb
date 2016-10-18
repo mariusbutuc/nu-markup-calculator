@@ -3,9 +3,8 @@ require_relative '../lib/markup_calculator'
 
 class MarkupCalculatorTest < Minitest::Test
   def test_base_price_argument_is_required
-    invalid_arguments = valid_arguments.tap { |hash| hash.delete(:base_price) }
     error = assert_raises ArgumentError do
-      MarkupCalculator.new(**invalid_arguments)
+      MarkupCalculator.new(**arguments_without(:base_price))
     end
 
     assert_match 'missing keyword: base_price', error.message
@@ -32,9 +31,8 @@ class MarkupCalculatorTest < Minitest::Test
   end
 
   def test_people_argument_is_required
-    invalid_arguments = valid_arguments.tap { |hash| hash.delete(:people) }
     error = assert_raises ArgumentError do
-      MarkupCalculator.new(**invalid_arguments)
+      MarkupCalculator.new(**arguments_without(:people))
     end
 
     assert_match 'missing keyword: people', error.message
@@ -61,9 +59,8 @@ class MarkupCalculatorTest < Minitest::Test
   end
 
   def test_material_argument_is_required
-    invalid_arguments = valid_arguments.tap { |hash| hash.delete(:material) }
     error = assert_raises ArgumentError do
-      MarkupCalculator.new(**invalid_arguments)
+      MarkupCalculator.new(**arguments_without(:material))
     end
 
     assert_match 'missing keyword: material', error.message
@@ -125,6 +122,10 @@ class MarkupCalculatorTest < Minitest::Test
   end
 
   private
+
+  def arguments_without(key)
+    valid_arguments.tap { |hash| hash.delete(key) }
+  end
 
   def valid_arguments
     {
