@@ -12,34 +12,15 @@ class MarkupCalculator
   }
   PER_PERSON_MARKUP = 0.012
 
-  attr_reader :material
+  attr_reader :base_price, :people, :material
 
   def initialize(base_price:, people:, material:)
     @base_price = base_price
     @people = people
     @material = material.to_sym
-  end
 
-  def base_price
-    raise NonPositiveBasePriceError unless @base_price.positive?
-    @base_price
-  rescue NoMethodError => e
-    if e.message.match(/positive\?/)
-      raise NonNumericBasePriceError
-    else
-      raise
-    end
-  end
-
-  def people
-    raise NonPositivePeopleError unless @people.positive?
-    @people
-  rescue NoMethodError => e
-    if e.message.match(/positive\?/)
-      raise NonNumericPeopleError
-    else
-      raise
-    end
+    validate_base_price
+    validate_people
   end
 
   def calculate
@@ -73,5 +54,25 @@ class MarkupCalculator
 
   def any_markup_for?(material)
     MATERIAL_MARKUP.keys.include?(material)
+  end
+
+  def validate_base_price
+    raise NonPositiveBasePriceError unless @base_price.positive?
+  rescue NoMethodError => e
+    if e.message.match(/positive\?/)
+      raise NonNumericBasePriceError
+    else
+      raise
+    end
+  end
+
+  def validate_people
+    raise NonPositivePeopleError unless @people.positive?
+  rescue NoMethodError => e
+    if e.message.match(/positive\?/)
+      raise NonNumericPeopleError
+    else
+      raise
+    end
   end
 end
