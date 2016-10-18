@@ -1,4 +1,4 @@
-# NuMarkupCalculator
+# NuMarkupCalculator [![Build Status](https://travis-ci.org/mariusbutuc/nu-markup-calculator.svg?branch=proposed-solution)](https://travis-ci.org/mariusbutuc/nu-markup-calculator)
 
 ## Pricing problem
 
@@ -41,4 +41,10 @@ The flat markup is calculated first and then all other markups are calculated on
 
   ```
   bundle install
+  ```
+
+* Running your tests from the command line
+
+  ```
+  rake test
   ```
