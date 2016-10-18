@@ -11,6 +11,26 @@ class MarkupCalculatorTest < Minitest::Test
     assert_match 'missing keyword: base_price', error.message
   end
 
+  def test_base_price_needs_to_be_numeric
+    invalid_arguments = valid_arguments.merge(base_price: 'not numeric')
+
+    error = assert_raises MarkupCalculator::NonNumericBasePriceError do
+      MarkupCalculator.new(**invalid_arguments)
+    end
+
+    assert_match 'must be numeric: base_price', error.message
+  end
+
+  def test_base_price_needs_to_be_positive
+    invalid_arguments = valid_arguments.merge(base_price: -1)
+
+    error = assert_raises MarkupCalculator::NonPositiveBasePriceError do
+      MarkupCalculator.new(**invalid_arguments)
+    end
+
+    assert_match 'must be positive: base_price', error.message
+  end
+
   def test_people_argument_is_required
     invalid_arguments = valid_arguments.tap { |hash| hash.delete(:people) }
     error = assert_raises ArgumentError do
@@ -20,6 +40,26 @@ class MarkupCalculatorTest < Minitest::Test
     assert_match 'missing keyword: people', error.message
   end
 
+  def test_people_needs_to_be_numeric
+    invalid_arguments = valid_arguments.merge(people: 'not numeric')
+
+    error = assert_raises MarkupCalculator::NonNumericPeopleError do
+      MarkupCalculator.new(**invalid_arguments)
+    end
+
+    assert_match 'must be numeric: people', error.message
+  end
+
+  def test_people_needs_to_be_positive
+    invalid_arguments = valid_arguments.merge(people: -1)
+
+    error = assert_raises MarkupCalculator::NonPositivePeopleError do
+      MarkupCalculator.new(**invalid_arguments)
+    end
+
+    assert_match 'must be positive: people', error.message
+  end
+
   def test_material_argument_is_required
     invalid_arguments = valid_arguments.tap { |hash| hash.delete(:material) }
     error = assert_raises ArgumentError do
@@ -27,46 +67,6 @@ class MarkupCalculatorTest < Minitest::Test
     end
 
     assert_match 'missing keyword: material', error.message
-  end
-
-  def test_calculate_requires_base_price_to_be_numeric
-    invalid_arguments = valid_arguments.merge(base_price: 'not numeric')
-
-    error = assert_raises MarkupCalculator::NonNumericBasePriceError do
-      MarkupCalculator.new(**invalid_arguments).calculate
-    end
-
-    assert_match 'must be numeric: base_price', error.message
-  end
-
-  def test_calculate_requires_base_price_to_be_positive
-    invalid_arguments = valid_arguments.merge(base_price: -1)
-
-    error = assert_raises MarkupCalculator::NonPositiveBasePriceError do
-      MarkupCalculator.new(**invalid_arguments).calculate
-    end
-
-    assert_match 'must be positive: base_price', error.message
-  end
-
-  def test_calculate_requires_people_to_be_numeric
-    invalid_arguments = valid_arguments.merge(people: 'not numeric')
-
-    error = assert_raises MarkupCalculator::NonNumericPeopleError do
-      MarkupCalculator.new(**invalid_arguments).calculate
-    end
-
-    assert_match 'must be numeric: people', error.message
-  end
-
-  def test_calculate_requires_people_to_be_positive
-    invalid_arguments = valid_arguments.merge(people: -1)
-
-    error = assert_raises MarkupCalculator::NonPositivePeopleError do
-      MarkupCalculator.new(**invalid_arguments).calculate
-    end
-
-    assert_match 'must be positive: people', error.message
   end
 
   def test_calculator_applies_electronics_category_markup
