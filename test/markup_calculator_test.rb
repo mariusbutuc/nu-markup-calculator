@@ -32,7 +32,7 @@ class MarkupCalculatorTest < Minitest::Test
   def test_calculate_requires_base_price_to_be_numeric
     invalid_arguments = valid_arguments.merge(base_price: 'not numeric')
 
-    error = assert_raises ArgumentError do
+    error = assert_raises MarkupCalculator::NonNumericBasePriceError do
       MarkupCalculator.new(**invalid_arguments).calculate
     end
 
@@ -42,7 +42,7 @@ class MarkupCalculatorTest < Minitest::Test
   def test_calculate_requires_base_price_to_be_positive
     invalid_arguments = valid_arguments.merge(base_price: -1)
 
-    error = assert_raises ArgumentError do
+    error = assert_raises MarkupCalculator::NonPositiveBasePriceError do
       MarkupCalculator.new(**invalid_arguments).calculate
     end
 
@@ -52,7 +52,7 @@ class MarkupCalculatorTest < Minitest::Test
   def test_calculate_requires_people_to_be_numeric
     invalid_arguments = valid_arguments.merge(people: 'not numeric')
 
-    error = assert_raises ArgumentError do
+    error = assert_raises MarkupCalculator::NonNumericPeopleError do
       MarkupCalculator.new(**invalid_arguments).calculate
     end
 
@@ -62,7 +62,7 @@ class MarkupCalculatorTest < Minitest::Test
   def test_calculate_requires_people_to_be_positive
     invalid_arguments = valid_arguments.merge(people: -1)
 
-    error = assert_raises ArgumentError do
+    error = assert_raises MarkupCalculator::NonPositivePeopleError do
       MarkupCalculator.new(**invalid_arguments).calculate
     end
 

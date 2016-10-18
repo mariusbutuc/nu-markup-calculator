@@ -1,6 +1,9 @@
+require_relative 'errors'
 require_relative 'thesaurus'
 
 class MarkupCalculator
+  include Errors
+
   FLAT_MARKUP       = 0.05
   MATERIAL_MARKUP   = {
     electronics:    0.02,
@@ -18,22 +21,22 @@ class MarkupCalculator
   end
 
   def base_price
-    raise ArgumentError, 'must be positive: base_price' unless @base_price.positive?
+    raise NonPositiveBasePriceError unless @base_price.positive?
     @base_price
   rescue NoMethodError => e
     if e.message.match(/positive\?/)
-      raise ArgumentError, 'must be numeric: base_price'
+      raise NonNumericBasePriceError
     else
       raise
     end
   end
 
   def people
-    raise ArgumentError, 'must be positive: people' unless @people.positive?
+    raise NonPositivePeopleError unless @people.positive?
     @people
   rescue NoMethodError => e
     if e.message.match(/positive\?/)
-      raise ArgumentError, 'must be numeric: people'
+      raise NonNumericPeopleError
     else
       raise
     end
